@@ -1,4 +1,4 @@
-import { InferSchemaType, Schema, model } from 'mongoose'
+import mongoose, { InferSchemaType, Schema, model } from 'mongoose'
 
 const noteSchema = new Schema(
   {
@@ -11,3 +11,5 @@ const noteSchema = new Schema(
 type Note = InferSchemaType<typeof noteSchema>
 
 export const NoteModel = model<Note>('Note', noteSchema)
+
+export const idValidate = mongoose.isValidObjectId

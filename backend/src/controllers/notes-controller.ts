@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express'
-import { NoteModel } from '../models/note'
+import { NoteModel, idValidate } from '../models/note'
+import { createJSONError } from '../utils/createJSONError'
 
 export const getNotes: RequestHandler = async (req, res, next) => {
   try {
@@ -11,17 +12,36 @@ export const getNotes: RequestHandler = async (req, res, next) => {
 }
 export const getNote: RequestHandler = async (req, res, next) => {
   try {
-    const noteId = req.params.noteId as string
+    const { noteId } = req.params
+    if (!idValidate(noteId)) {
+      createJSONError(res, 400, 'Invalid id')
+    }
     const note = await NoteModel.findById(noteId).exec()
+    if (!note) {
+      createJSONError(res, 404, 'Note not found')
+    }
     res.status(200).json(note)
   } catch (error) {
     next(error)
   }
 }
 
-export const createNote: RequestHandler = async (req, res, next) => {
+interface CreateNoteDTO {
+  title?: string
+  text?: string
+}
+
+export const createNote: RequestHandler<
+  unknown,
+  unknown,
+  CreateNoteDTO,
+  unknown
+> = async (req, res, next) => {
   try {
     const { title, text } = req.body
+    if (!title) {
+      createJSONError(res, 400, 'Title is required')
+    }
     const newNote = await NoteModel.create({
       title,
       text,
