@@ -12,7 +12,7 @@ coverage
 benchmarks/graphs
 
 #build
-#dist
+# dist
 
 #env
 .env
