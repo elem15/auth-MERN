@@ -9,7 +9,7 @@
     "build": "tsc",
     "lint": "eslint ./src/**/*.{tsx,ts,jsx,js} --no-error-on-unmatched-pattern",
     "eslint:fix": "eslint --fix src/**/*.{tsx,ts,jsx,js} --no-error-on-unmatched-pattern",
-    "deploy": "npm eslint:fix && npm run build && git push origin dev",
+    "deploy": "npm run eslint:fix && npm run build && git push origin dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
