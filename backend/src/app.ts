@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import express from 'express'
+import cors from 'cors'
 import methodOverride from 'method-override'
 import morgan from 'morgan'
 import notesRouter from './routes/notes-route'
@@ -12,7 +13,7 @@ import {
 } from './utils/errorHandlers'
 
 const app = express()
-
+app.use(cors())
 app.use(morgan('dev'))
 
 app.use(bodyParser.urlencoded({ extended: true }))

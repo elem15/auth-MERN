@@ -1,7 +1,7 @@
-interface NoteId {
+export interface NoteId {
   noteId: string
 }
-interface NoteDTO {
+export interface NoteDTO {
   title?: string
   text?: string
 }

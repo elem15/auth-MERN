@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express'
 import { NoteModel, idValidate } from '../models/note'
 import createHttpError from 'http-errors'
+import { NoteDTO, NoteId } from '../types/note'
 
 export const getNotes: RequestHandler = async (req, res, next) => {
   try {
