@@ -26,7 +26,7 @@ export const getNote: RequestHandler = async (req, res, next) => {
   }
 }
 
-interface CreateNoteDTO {
+interface NoteDTO {
   title?: string
   text?: string
 }
@@ -34,7 +34,7 @@ interface CreateNoteDTO {
 export const createNote: RequestHandler<
   unknown,
   unknown,
-  CreateNoteDTO,
+  NoteDTO,
   unknown
 > = async (req, res, next) => {
   try {
@@ -47,6 +47,37 @@ export const createNote: RequestHandler<
       text,
     })
     res.status(201).json(newNote)
+  } catch (error) {
+    next(error)
+  }
+}
+
+interface NoteId {
+  noteId: string
+}
+export const updateNote: RequestHandler<
+  NoteId,
+  unknown,
+  NoteDTO,
+  unknown
+> = async (req, res, next) => {
+  try {
+    const { noteId } = req.params
+
+    const { title, text } = req.body
+    if (!title) {
+      throw createHttpError(400, 'Title is required')
+    }
+    const note = await NoteModel.findById(noteId).exec()
+    if (!note) {
+      throw createHttpError(404, 'Note not found')
+    }
+    note.title = title
+    note.text = text
+
+    const updatedNote = await note.save()
+
+    res.status(200).json(updatedNote)
   } catch (error) {
     next(error)
   }
