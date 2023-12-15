@@ -26,11 +26,6 @@ export const getNote: RequestHandler = async (req, res, next) => {
   }
 }
 
-interface NoteDTO {
-  title?: string
-  text?: string
-}
-
 export const createNote: RequestHandler<
   unknown,
   unknown,
@@ -52,9 +47,6 @@ export const createNote: RequestHandler<
   }
 }
 
-interface NoteId {
-  noteId: string
-}
 export const updateNote: RequestHandler<
   NoteId,
   unknown,
@@ -68,6 +60,9 @@ export const updateNote: RequestHandler<
     if (!title) {
       throw createHttpError(400, 'Title is required')
     }
+    if (!idValidate(noteId)) {
+      throw createHttpError(400, 'Invalid id')
+    }
     const note = await NoteModel.findById(noteId).exec()
     if (!note) {
       throw createHttpError(404, 'Note not found')
@@ -78,6 +73,31 @@ export const updateNote: RequestHandler<
     const updatedNote = await note.save()
 
     res.status(200).json(updatedNote)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const deleteNote: RequestHandler<
+  NoteId,
+  unknown,
+  unknown,
+  unknown
+> = async (req, res, next) => {
+  try {
+    const { noteId } = req.params
+
+    if (!idValidate(noteId)) {
+      throw createHttpError(400, 'Invalid id')
+    }
+    const note = await NoteModel.findById(noteId).exec()
+    if (!note) {
+      throw createHttpError(404, 'Note not found')
+    }
+
+    await note.deleteOne()
+
+    res.sendStatus(204)
   } catch (error) {
     next(error)
   }
