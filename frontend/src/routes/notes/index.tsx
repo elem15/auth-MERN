@@ -5,12 +5,17 @@ import Preloader from '../../components/loader/Preloader'
 export const Notes = () => {
   const { data, error, isLoading } = useGetNotesQuery()
   useEffect(() => {
-    console.error(error)
+    error && console.error(error)
   }, [error])
   return (
     <div>
       {isLoading && <Preloader />}
-      {JSON.stringify(data)}
+      <ul>{data && data.map(note => (
+        <li key={note._id}>
+          <h2 className='text-lg'>{note.title}</h2>
+          <p className='text-base'>{note.text}</p>
+        </li>
+      ))}</ul>
     </div>
   )
 }
