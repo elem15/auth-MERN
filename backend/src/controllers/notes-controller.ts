@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express'
 import { NoteModel, idValidate } from '../models/note'
-import { createJSONError } from '../utils/createJSONError'
+import createHttpError from 'http-errors'
 
 export const getNotes: RequestHandler = async (req, res, next) => {
   try {
@@ -14,11 +14,11 @@ export const getNote: RequestHandler = async (req, res, next) => {
   try {
     const { noteId } = req.params
     if (!idValidate(noteId)) {
-      createJSONError(res, 400, 'Invalid id')
+      throw createHttpError(400, 'Invalid id')
     }
     const note = await NoteModel.findById(noteId).exec()
     if (!note) {
-      createJSONError(res, 404, 'Note not found')
+      throw createHttpError(404, 'Note not found')
     }
     res.status(200).json(note)
   } catch (error) {
@@ -40,7 +40,7 @@ export const createNote: RequestHandler<
   try {
     const { title, text } = req.body
     if (!title) {
-      createJSONError(res, 400, 'Title is required')
+      throw createHttpError(400, 'Title is required')
     }
     const newNote = await NoteModel.create({
       title,
