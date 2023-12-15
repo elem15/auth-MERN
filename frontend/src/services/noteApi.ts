@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { BASE_URL, REMOTE_URL } from '../helpers/constants'
+import { BASE_URL } from '../helpers/constants'
 
 export const noteApi = createApi({
   reducerPath: 'notesApi',
@@ -16,7 +16,6 @@ export const noteApi = createApi({
       query: (body) => ({
         url: `/app/notes`,
         method: 'POST',
-        credentials: 'include',
         body,
         headers: {
           'Content-Type': 'application/json',
