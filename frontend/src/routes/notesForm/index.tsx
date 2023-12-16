@@ -1,9 +1,11 @@
-import { FormEvent } from 'react'
+import { FormEvent, useEffect } from 'react'
 import { useCreateNoteMutation } from '../../services/noteApi'
 import Preloader from '../../components/loader/Preloader'
+import { Link, useNavigate } from "react-router-dom";
 
 export const NotesForm = () => {
-  const [createNote, { error, isLoading }] = useCreateNoteMutation()
+  const navigate = useNavigate();
+  const [createNote, { error, isLoading, isSuccess }] = useCreateNoteMutation()
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget as HTMLFormElement)
@@ -11,11 +13,19 @@ export const NotesForm = () => {
     const text = formData.get('text') as string | undefined
     createNote({ title, text })
   }
-  error && console.log(error)
+  useEffect(() => {
+    isSuccess && navigate('/notes')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess])
+  useEffect(() => {
+    error && console.log(error)
+  }, [error])
+
   return (
     <>
       {isLoading && <Preloader />}
-
+      <Link to={'/notes'}>Notes</Link>
+      <button onClick={() => navigate('/notes')}>Notes</button>
       <form className='flex flex-col mx-auto w-36' onSubmit={handleSubmit} >
         <input type="text" name="title" required className='border-spacing-2 border-2' />
         <input type="text" name="text" className='border-spacing-2 border-2' />
