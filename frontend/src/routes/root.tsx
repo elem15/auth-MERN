@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 export const Root = () => {
-  return <div>Hello world!</div>
+  return <div><Link to={'/notes'}>Notes</Link></div>
 }

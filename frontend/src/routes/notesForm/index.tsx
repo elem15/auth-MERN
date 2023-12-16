@@ -24,8 +24,8 @@ export const NotesForm = () => {
   return (
     <>
       {isLoading && <Preloader />}
+      <Link to={'/'}>🔙Home</Link>
       <Link to={'/notes'}>Notes</Link>
-      <button onClick={() => navigate('/notes')}>Notes</button>
       <form className='flex flex-col mx-auto w-36' onSubmit={handleSubmit} >
         <input type="text" name="title" required className='border-spacing-2 border-2' />
         <input type="text" name="text" className='border-spacing-2 border-2' />

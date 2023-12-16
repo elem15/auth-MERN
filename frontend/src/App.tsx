@@ -29,7 +29,9 @@ const router = createBrowserRouter([
 const App = () => {
   return (
     <Provider store={store}>
+      {/* <HashRouter basename="/"> */}
       <RouterProvider router={router} />
+      {/* </HashRouter> */}
     </Provider>
   )
 
