@@ -3,7 +3,6 @@ import createHttpError from 'http-errors'
 import bcrypt from 'bcrypt'
 import { idValidate } from '../models/note'
 import { UserModel } from '../models/user'
-import { UserId, UserDTO, UserUpdateDTO } from '../types/user'
 
 export const getUsers: RequestHandler<
   UserId,
@@ -12,31 +11,33 @@ export const getUsers: RequestHandler<
   unknown
 > = async (req, res, next) => {
   try {
-    const { userId } = req.params
-    if (!userId || !idValidate(userId)) {
-      const users = await UserModel.find().exec()
-      res.status(200).json(users)
-      return
+    const authUserId = req.session.userId
+    if (!authUserId) {
+      throw createHttpError(401, 'Unauthorized')
     }
-    const user = await UserModel.findById(userId).exec()
+    const user = await UserModel.findById(authUserId).select('+email').exec()
     if (!user) {
-      const users = await UserModel.find().exec()
-      res.status(200).json(users)
-      return
+      throw createHttpError(400, 'Invalid id')
     }
-    const users = await UserModel.find({ _id: { $ne: userId } }).exec()
+    const users = await UserModel.find({ _id: { $ne: authUserId } })
+      .select('+email')
+      .exec()
     res.status(200).json(users)
   } catch (error) {
     next(error)
   }
 }
+
 export const getUser: RequestHandler = async (req, res, next) => {
   try {
-    const { userId } = req.params
-    if (!idValidate(userId)) {
+    const authUserId = req.session.userId
+    if (!authUserId) {
+      throw createHttpError(401, 'Unauthorized')
+    }
+    if (!idValidate(authUserId)) {
       throw createHttpError(400, 'Invalid id')
     }
-    const user = await UserModel.findById(userId).exec()
+    const user = await UserModel.findById(authUserId).select('+email').exec()
     if (!user) {
       throw createHttpError(404, 'User not found')
     }
@@ -77,10 +78,54 @@ export const signUp: RequestHandler<
       gender,
       image,
     })
-    res.status(201).json({ userId: newUser._id })
+    req.session.userId = newUser._id
+    res.status(201).json(newUser)
   } catch (error) {
     next(error)
   }
+}
+
+export const login: RequestHandler<
+  unknown,
+  unknown,
+  UserLoginDTO,
+  unknown
+> = async (req, res, next) => {
+  const { email, password } = req.body
+
+  try {
+    if (!email || !password) {
+      throw createHttpError(400, 'Email and password are required')
+    }
+
+    const user = await UserModel.findOne({ email })
+      .select('+password +email')
+      .exec()
+    if (!user) {
+      throw createHttpError(401, 'Email or password are incorrect')
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.password)
+
+    if (!passwordMatch) {
+      throw createHttpError(401, 'Email or password are incorrect')
+    }
+
+    req.session.userId = user._id
+    res.status(201).json(user)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const logout: RequestHandler = (req, res, next) => {
+  req.session.destroy((error) => {
+    if (error) {
+      next(error)
+    } else {
+      res.sendStatus(200)
+    }
+  })
 }
 
 export const updateUser: RequestHandler<
@@ -90,20 +135,27 @@ export const updateUser: RequestHandler<
   unknown
 > = async (req, res, next) => {
   try {
-    const { userId } = req.params
+    const authUserId = req.session.userId
+    if (!authUserId) {
+      throw createHttpError(401, 'Unauthorized')
+    }
 
     const { name, password, image } = req.body
     if (!(name || password || image)) {
       throw createHttpError(400, 'No fields for update')
     }
-    if (!idValidate(userId)) {
+    if (!idValidate(authUserId)) {
       throw createHttpError(400, 'Invalid id')
     }
-    const user = await UserModel.findById(userId).exec()
+    const user = await UserModel.findById(authUserId)
+      .select('+password +email')
+      .exec()
     if (!user) {
       throw createHttpError(404, 'User not found')
     }
-    const userWithName = await UserModel.findOne({ name }).exec()
+    const userWithName = await UserModel.findOne({ name })
+      .select('+password')
+      .exec()
     if (userWithName) {
       throw createHttpError(404, 'This name is already taken')
     }

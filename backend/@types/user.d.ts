@@ -1,7 +1,7 @@
-export interface UserId {
+interface UserId {
   userId: string
 }
-export interface UserDTO {
+interface UserDTO {
   name: string
   email: string
   password: string
@@ -9,8 +9,12 @@ export interface UserDTO {
   gender: string
   image: unknown
 }
-export interface UserUpdateDTO {
+interface UserUpdateDTO {
   name: string
   password: string
   image: unknown
+}
+interface UserLoginDTO {
+  email: string
+  password: string
 }

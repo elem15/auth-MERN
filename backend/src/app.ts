@@ -12,6 +12,9 @@ import {
   errorHandler,
   logErrors,
 } from './utils/errorHandlers'
+import session from 'express-session'
+import validateEnv from './utils/validateEnv'
+import MongoStore from 'connect-mongo'
 
 const app = express()
 app.use(morgan('dev'))
@@ -21,6 +24,22 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(methodOverride())
+
+app.use(
+  session({
+    secret: validateEnv.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 60 * 60 * 1000,
+    },
+    rolling: true,
+    store: MongoStore.create({
+      mongoUrl: validateEnv.MONGO_CONNECTION_STRING,
+    }),
+  })
+)
+
 app.use('/app/notes', notesRoute)
 app.use('/app/users', usersRoute)
 app.use(() => {

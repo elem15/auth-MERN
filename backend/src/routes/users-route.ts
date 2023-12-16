@@ -4,13 +4,17 @@ import {
   getUser,
   getUsers,
   updateUser,
+  login,
+  logout,
 } from '../controllers/user-controller'
 
 const router = Router()
 
-router.get('/:userId', getUsers)
-router.get('/one/:userId', getUser)
-router.post('/sign-up', signUp)
-router.put('/:userId', updateUser)
+router.get('/', getUsers)
+router.get('/one', getUser)
+router.post('/signup', signUp)
+router.post('/login', login)
+router.post('/logout', logout)
+router.put('/', updateUser)
 
 export default router
