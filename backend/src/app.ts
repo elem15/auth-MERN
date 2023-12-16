@@ -3,7 +3,8 @@ import express from 'express'
 import cors from 'cors'
 import methodOverride from 'method-override'
 import morgan from 'morgan'
-import notesRouter from './routes/notes-route'
+import notesRoute from './routes/notes-route'
+import usersRoute from './routes/users-route'
 import bodyParser from 'body-parser'
 import createHttpError from 'http-errors'
 import {
@@ -20,7 +21,8 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(methodOverride())
-app.use('/app/notes', notesRouter)
+app.use('/app/notes', notesRoute)
+app.use('/app/users', usersRoute)
 app.use(() => {
   throw createHttpError(404, 'Route not found!')
 })
