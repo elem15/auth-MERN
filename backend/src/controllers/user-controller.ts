@@ -12,17 +12,21 @@ export const getUsers: RequestHandler<
   unknown
 > = async (req, res, next) => {
   try {
-    const authUserId = req.session.userId
-    if (!authUserId) {
-      throw createHttpError(401, 'Unauthorized')
-    }
-    const user = await UserModel.findById(authUserId).select('+email').exec()
-    if (!user) {
-      throw createHttpError(400, 'Invalid id')
-    }
-    const users = await UserModel.find({ _id: { $ne: authUserId } })
-      .select('+email')
-      .exec()
+    // commented for local develop
+
+    // const authUserId = req.session.userId
+    // if (!authUserId) {
+    //   throw createHttpError(401, 'Unauthorized')
+    // }
+    // const user = await UserModel.findById(authUserId).select('+email').exec()
+    // if (!user) {
+    //   throw createHttpError(400, 'Invalid id')
+    // }
+    // const users = await UserModel.find({ _id: { $ne: authUserId } })
+    //   .select('+email')
+    //   .exec()
+
+    const users = await UserModel.find().select('+email').exec()
     res.status(200).json(users)
   } catch (error) {
     next(error)

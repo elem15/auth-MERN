@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { BASE_URL } from '../helpers/constants'
+import { getAge } from '../helpers/getAge'
 
 export const usersApi = createApi({
   reducerPath: 'usersApi',
@@ -11,11 +12,35 @@ export const usersApi = createApi({
         url: `app/users`
       }),    
       providesTags: ['Users'],
+      transformResponse: async (
+        value: UserFromApi[] | Promise<UserFromApi[]>,  
+      ) => {
+        const users = await value
+        return users.map((user) => {
+          const { dateOfBirth } = user
+          const age = getAge(new Date(), new Date(dateOfBirth))
+          user.age = Math.trunc(age)
+          return user
+        })
+      },
     }),
     signUp: builder.mutation<UserFromApi, User>({
       query: (body) => ({
         url: `app/users/signup`,
         method: 'POST',
+        body,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Headers': "Accept, Content-Type, Authorization, X-Requested-With",
+          'Access-Control-Allow-Origin': BASE_URL
+        },
+      }),
+      invalidatesTags: ['Users'],
+    }),
+    updateUser: builder.mutation<UserFromApi, UserUpdate>({
+      query: (body) => ({
+        url: `app/users/account`,
+        method: 'PUT',
         body,
         headers: {
           'Content-Type': 'application/json',
@@ -41,4 +66,4 @@ export const usersApi = createApi({
   })
 })
 
-export const { useGetUsersQuery, useSignUpMutation, useLoginMutation} = usersApi
+export const { useGetUsersQuery, useSignUpMutation, useLoginMutation, useUpdateUserMutation} = usersApi

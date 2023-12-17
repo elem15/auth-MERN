@@ -10,24 +10,36 @@ import { Provider } from 'react-redux'
 import { Notes } from './routes/notes';
 import { NotesForm } from './routes/notesForm';
 import { People } from './routes/people';
+import { AccountPage } from './routes/account';
+import { Home } from './routes/home';
 
 const router = createHashRouter([
   {
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
-  },
-  {
-    path: "people",
-    element: <People />,
-  },
-  {
-    path: "notes",
-    element: <Notes />,
-  },
-  {
-    path: "notes/form",
-    element: <NotesForm />,
+    children: [
+      {
+        path: "",
+        element: <Home />,
+      },
+      {
+        path: "people",
+        element: <People />,
+      },
+      {
+        path: "account",
+        element: <AccountPage />,
+      },
+      {
+        path: "notes",
+        element: <Notes />,
+      },
+      {
+        path: "notes/form",
+        element: <NotesForm />,
+      },
+    ]
   },
 ]);
 

@@ -15,7 +15,6 @@ export const Registration = () => {
     const dateOfBirth = formData.get('dateOfBirth') as string
     const gender = formData.get('gender') as string
     signUp({ name, email, password, dateOfBirth, gender })
-    // console.log({ name, email, password, dateOfBirth, gender })
   }
   useEffect(() => {
     isSuccess && navigate('/people')
@@ -28,14 +27,12 @@ export const Registration = () => {
   return (
     <>
       {isLoading && <Preloader />}
-      <Link to={'/'}>🔙Home</Link>
-      <Link to={'/notes'}>Notes</Link>
       <form className='flex flex-col mx-auto w-36' onSubmit={handleSubmit} >
         <input type="text" name="name" required className='border-spacing-2 border-2 mb-6' />
         <input type="email" name="email" required className='border-spacing-2 border-2 mb-6' />
         <input type="password" name="password" required className='border-spacing-2 border-2 mb-6' />
         <input type="date" name="dateOfBirth" required className='border-spacing-2 border-2 mb-6' />
-        <select name="gender" className='border-spacing-2 border-2 mb-6' >
+        <select name="gender" required className='border-spacing-2 border-2 mb-6' >
           <option value="">gender</option>
           <option value="male">male</option>
           <option value="female">female</option>

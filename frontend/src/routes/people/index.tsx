@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import Preloader from '../../components/loader/Preloader'
-import { Link } from 'react-router-dom'
 import { useGetUsersQuery } from '../../services/usersApi'
 
 export const People = () => {
@@ -11,12 +10,11 @@ export const People = () => {
   return (
     <>
       {isLoading && <Preloader />}
-      <Link to={'/notes/form'}>New note</Link>
 
       <ul>{data && data.map(user => (
         <li key={user._id}>
           <h2 className='text-lg'>{user.name}</h2>
-          <p className='text-base'>{user.email}</p>
+          <p className='text-base'>{user.age}</p>
         </li>
       ))}</ul>
     </>

@@ -8,6 +8,7 @@ interface User {
 }
 interface UserFromApi extends Omit<User, 'password'> {
   _id: string
+  age?: number
   createdAt: string
   updatedAt: string 
 }
