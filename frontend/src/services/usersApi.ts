@@ -25,7 +25,20 @@ export const usersApi = createApi({
       }),
       invalidatesTags: ['Users'],
     }),
+    login: builder.mutation<UserFromApi, UserLogin>({
+      query: (body) => ({
+        url: `app/users/login`,
+        method: 'POST',
+        body,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Headers': "Accept, Content-Type, Authorization, X-Requested-With",
+          'Access-Control-Allow-Origin': BASE_URL
+        },
+      }),
+      invalidatesTags: ['Users'],
+    }),
   })
 })
 
-export const { useGetUsersQuery, useSignUpMutation} = usersApi
+export const { useGetUsersQuery, useSignUpMutation, useLoginMutation} = usersApi

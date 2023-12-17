@@ -15,6 +15,8 @@ import {
 import session from 'express-session'
 import validateEnv from './utils/validateEnv'
 import MongoStore from 'connect-mongo'
+import path from 'path'
+import serveStatic from 'serve-static'
 
 const app = express()
 app.use(morgan('dev'))
@@ -39,7 +41,7 @@ app.use(
     }),
   })
 )
-
+app.use(serveStatic(path.join(__dirname, '../../frontend/dist/')))
 app.use('/app/notes', notesRoute)
 app.use('/app/users', usersRoute)
 app.use(() => {

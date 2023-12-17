@@ -11,7 +11,7 @@ export const Notes = () => {
   return (
     <>
       {isLoading && <Preloader />}
-      <Link to={'/notes/form'}>New note</Link>
+      <Link to={'/'}>Login</Link> | <Link to={'/notes/form'}>New note</Link>
 
       <ul>{data && data.map(note => (
         <li key={note._id}>

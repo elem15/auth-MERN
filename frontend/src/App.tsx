@@ -9,12 +9,17 @@ import { store } from './app/store'
 import { Provider } from 'react-redux'
 import { Notes } from './routes/notes';
 import { NotesForm } from './routes/notesForm';
+import { People } from './routes/people';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
+  },
+  {
+    path: "people",
+    element: <People />,
   },
   {
     path: "notes",
@@ -29,9 +34,7 @@ const router = createBrowserRouter([
 const App = () => {
   return (
     <Provider store={store}>
-      {/* <HashRouter basename="/"> */}
       <RouterProvider router={router} />
-      {/* </HashRouter> */}
     </Provider>
   )
 

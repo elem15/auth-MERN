@@ -77,7 +77,6 @@ export const signUp: RequestHandler<
     const date = new Date(dateOfBirth)
     const dateNow = new Date()
     const tooYang = date >= dateNow
-    //@ts-ignore
     const tooOld = getAge(dateNow, date) > 120
     if (tooYang || tooOld) {
       throw createHttpError(400, 'Incorrect date of birth')
