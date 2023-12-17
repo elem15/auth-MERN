@@ -3,6 +3,7 @@ import createHttpError from 'http-errors'
 import bcrypt from 'bcrypt'
 import { idValidate } from '../models/note'
 import { UserModel } from '../models/user'
+import { getAge } from '../utils/getAge'
 
 export const getUsers: RequestHandler<
   UserId,
@@ -70,11 +71,23 @@ export const signUp: RequestHandler<
       throw createHttpError(404, 'User with this email exist')
     }
     const passwordHash = await bcrypt.hash(password, 10)
+    if (isNaN(Date.parse(dateOfBirth))) {
+      throw createHttpError(400, 'Incorrect date format')
+    }
+    const date = new Date(dateOfBirth)
+    const dateNow = new Date()
+    const tooYang = date >= dateNow
+    //@ts-ignore
+    const tooOld = getAge(dateNow, date) > 120
+    if (tooYang || tooOld) {
+      throw createHttpError(400, 'Incorrect date of birth')
+    }
+
     const newUser = await UserModel.create({
       name,
       email,
       password: passwordHash,
-      dateOfBirth,
+      dateOfBirth: date.toISOString(),
       gender,
       image,
     })
