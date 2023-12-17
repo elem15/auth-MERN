@@ -18,7 +18,7 @@ export const Registration = () => {
     // console.log({ name, email, password, dateOfBirth, gender })
   }
   useEffect(() => {
-    isSuccess && navigate('/notes')
+    isSuccess && navigate('/people')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess])
   useEffect(() => {

@@ -1,10 +1,10 @@
 import { FormEvent, useEffect } from 'react'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Preloader from '../loader/Preloader'
 import { useLoginMutation } from '../../services/usersApi';
 
 export const Login = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [login, { error, isLoading, isSuccess }] = useLoginMutation()
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -14,9 +14,8 @@ export const Login = () => {
     login({ email, password })
   }
   useEffect(() => {
-    // isSuccess && navigate('/notes')
+    isSuccess && navigate('/people')
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    console.log(document.cookie)
   }, [isSuccess])
   useEffect(() => {
     error && console.log(error)

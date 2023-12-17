@@ -1,5 +1,5 @@
 import {
-  createBrowserRouter,
+  createHashRouter,
   RouterProvider,
 } from "react-router-dom"
 import "./index.css";
@@ -11,7 +11,7 @@ import { Notes } from './routes/notes';
 import { NotesForm } from './routes/notesForm';
 import { People } from './routes/people';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <Root />,
