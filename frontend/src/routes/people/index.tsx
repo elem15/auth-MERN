@@ -10,6 +10,7 @@ export const People = () => {
   return (
     <>
       {isLoading && <Preloader />}
+      <h1>All users except you</h1>
 
       <ul>{data && data.map(user => (
         <li key={user._id}>

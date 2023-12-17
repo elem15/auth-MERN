@@ -1,5 +1,5 @@
 import { FormEvent, useEffect } from 'react'
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Preloader from '../../components/loader/Preloader'
 import { useSignUpMutation } from '../../services/usersApi';
 
@@ -27,6 +27,8 @@ export const Registration = () => {
   return (
     <>
       {isLoading && <Preloader />}
+      <h1>Registration new user</h1>
+
       <form className='flex flex-col mx-auto w-36' onSubmit={handleSubmit} >
         <input type="text" name="name" required className='border-spacing-2 border-2 mb-6' />
         <input type="email" name="email" required className='border-spacing-2 border-2 mb-6' />

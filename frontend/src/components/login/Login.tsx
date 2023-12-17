@@ -1,5 +1,5 @@
 import { FormEvent, useEffect } from 'react'
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Preloader from '../loader/Preloader'
 import { useLoginMutation } from '../../services/usersApi';
 
@@ -24,6 +24,7 @@ export const Login = () => {
   return (
     <>
       {isLoading && <Preloader />}
+      <h1>Login</h1>
 
       <form className='flex flex-col mx-auto w-36' onSubmit={handleSubmit} >
         <input type="email" name="email" required className='border-spacing-2 border-2 mb-6' />

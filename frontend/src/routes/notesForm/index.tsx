@@ -1,7 +1,7 @@
 import { FormEvent, useEffect } from 'react'
 import { useCreateNoteMutation } from '../../services/noteApi'
 import Preloader from '../../components/loader/Preloader'
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const NotesForm = () => {
   const navigate = useNavigate();
@@ -24,6 +24,8 @@ export const NotesForm = () => {
   return (
     <>
       {isLoading && <Preloader />}
+      <h1>New note</h1>
+
       <form className='flex flex-col mx-auto w-36' onSubmit={handleSubmit} >
         <input type="text" name="title" required className='border-spacing-2 border-2' />
         <input type="text" name="text" className='border-spacing-2 border-2' />

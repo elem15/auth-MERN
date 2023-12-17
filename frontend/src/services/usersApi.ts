@@ -5,7 +5,7 @@ import { getAge } from '../helpers/getAge'
 export const usersApi = createApi({
   reducerPath: 'usersApi',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
-  tagTypes: ['Users'],
+  tagTypes: ['Users', 'User'],
   endpoints: (builder) => ({
     getUsers: builder.query<UserFromApi[], void>({
       query: () => ({
@@ -23,6 +23,12 @@ export const usersApi = createApi({
           return user
         })
       },
+    }),
+    getUser: builder.query<UserFromApi, void>({
+      query: () => ({
+        url: `app/users/one`
+      }),    
+      providesTags: ['User'],    
     }),
     signUp: builder.mutation<UserFromApi, User>({
       query: (body) => ({
@@ -66,4 +72,4 @@ export const usersApi = createApi({
   })
 })
 
-export const { useGetUsersQuery, useSignUpMutation, useLoginMutation, useUpdateUserMutation} = usersApi
+export const { useGetUsersQuery, useSignUpMutation, useLoginMutation, useUpdateUserMutation, useGetUserQuery } = usersApi
