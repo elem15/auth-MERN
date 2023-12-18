@@ -21,14 +21,18 @@ export const Registration = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess])
   useEffect(() => {
-    error && console.log(error)
+    if (error) {
+      const e = error as RTKError
+      alert(e.data?.error || 'Unknown error');
+    }
   }, [error])
 
   return (
     <>
       {isLoading && <Preloader />}
-      <h1>Registration new user</h1>
-
+      <h1 className='text-center text-xl'>Create new account</h1>
+      <hr />
+      <br />
       <form className='flex flex-col mx-auto w-36' onSubmit={handleSubmit} >
         <input type="text" name="name" required className='border-spacing-2 border-2 mb-6' />
         <input type="email" name="email" required className='border-spacing-2 border-2 mb-6' />

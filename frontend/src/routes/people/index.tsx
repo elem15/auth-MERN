@@ -1,16 +1,24 @@
 import { useEffect } from 'react'
 import Preloader from '../../components/loader/Preloader'
 import { useGetUsersQuery } from '../../services/usersApi'
+import { useNavigate } from 'react-router'
 
 export const People = () => {
+  const navigate = useNavigate()
   const { data, error, isLoading } = useGetUsersQuery()
   useEffect(() => {
-    error && console.error(error)
-  }, [error])
+    if (error) {
+      const e = error as RTKError
+      alert(e.data?.error || 'Unknown error');
+      navigate('/')
+    }
+  }, [error, navigate])
+
   return (
     <>
       {isLoading && <Preloader />}
-      <h1>All users except you</h1>
+
+      <h1 className='text-center text-xl'>All users except you</h1>
 
       <ul>{data && data.map(user => (
         <li key={user._id}>

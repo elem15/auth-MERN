@@ -7,8 +7,6 @@ import { Root } from './routes/root'
 import { ErrorPage } from './error-page'
 import { store } from './app/store'
 import { Provider } from 'react-redux'
-import { Notes } from './routes/notes';
-import { NotesForm } from './routes/notesForm';
 import { People } from './routes/people';
 import { AccountPage } from './routes/account';
 import { Home } from './routes/home';
@@ -22,22 +20,17 @@ const router = createHashRouter([
       {
         path: "",
         element: <Home />,
+        errorElement: <ErrorPage />,
       },
       {
         path: "people",
         element: <People />,
+        errorElement: <ErrorPage />,
       },
       {
         path: "account",
         element: <AccountPage />,
-      },
-      {
-        path: "notes",
-        element: <Notes />,
-      },
-      {
-        path: "notes/form",
-        element: <NotesForm />,
+        errorElement: <ErrorPage />,
       },
     ]
   },

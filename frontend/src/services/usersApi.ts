@@ -41,7 +41,7 @@ export const usersApi = createApi({
           'Access-Control-Allow-Origin': BASE_URL
         },
       }),
-      invalidatesTags: ['Users'],
+      invalidatesTags: ['Users', 'User'],
     }),
     updateUser: builder.mutation<UserFromApi, UserUpdate>({
       query: (body) => ({
@@ -54,7 +54,7 @@ export const usersApi = createApi({
           'Access-Control-Allow-Origin': BASE_URL
         },
       }),
-      invalidatesTags: ['Users'],
+      invalidatesTags: ['User'],
     }),
     login: builder.mutation<UserFromApi, UserLogin>({
       query: (body) => ({
@@ -67,9 +67,21 @@ export const usersApi = createApi({
           'Access-Control-Allow-Origin': BASE_URL
         },
       }),
-      invalidatesTags: ['Users'],
+      invalidatesTags: ['Users', 'User'],
+    }),
+    logout: builder.mutation<unknown, void>({
+      query: () => ({
+        url: `app/users/logout`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Headers': "Accept, Content-Type, Authorization, X-Requested-With",
+          'Access-Control-Allow-Origin': BASE_URL
+        },
+      }),
+      invalidatesTags: ['Users', 'User'],
     }),
   })
 })
 
-export const { useGetUsersQuery, useSignUpMutation, useLoginMutation, useUpdateUserMutation, useGetUserQuery } = usersApi
+export const { useGetUsersQuery, useSignUpMutation, useLoginMutation, useUpdateUserMutation, useGetUserQuery, useLogoutMutation } = usersApi

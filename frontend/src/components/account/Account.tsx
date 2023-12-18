@@ -5,7 +5,7 @@ import { useGetUserQuery, useUpdateUserMutation } from '../../services/usersApi'
 
 export const Account = () => {
   const navigate = useNavigate();
-  const { data, error: getError, isLoading: getLoading } = useGetUserQuery()
+  const { data, error: getQueryError, isLoading: getQueryIsLoading } = useGetUserQuery()
 
   const [updateUser, { error, isLoading, isSuccess }] = useUpdateUserMutation()
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -17,17 +17,27 @@ export const Account = () => {
   }
   useEffect(() => {
     isSuccess && navigate('/people')
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess])
+  }, [isSuccess, navigate])
+
   useEffect(() => {
-    error && console.log(error)
-    getError && console.log(getError)
-  }, [error, getError])
+    if (getQueryError) {
+      const e = getQueryError as RTKError
+      alert(e.data?.error || 'Unknown error');
+      getQueryError && navigate('/')
+    }
+  }, [getQueryError, navigate])
+
+  useEffect(() => {
+    if (error) {
+      const e = error as RTKError
+      alert(e.data?.error || 'Unknown error');
+    }
+  }, [error, navigate])
 
   return (
     <>
-      {isLoading || getLoading && <Preloader />}
-      <h1>Update account</h1>
+      {isLoading || getQueryIsLoading && <Preloader />}
+      <h1 className='text-center text-xl'>Update account</h1>
       <form className='flex flex-col mx-auto w-36' onSubmit={handleSubmit} autoComplete="off">
         <label htmlFor='name'>New name</label>
         <input type="text" name="name" required className='border-spacing-2 border-2 mb-6' placeholder={data?.name} autoComplete="false" />
