@@ -12,12 +12,8 @@ export const getUsers: RequestHandler<
   unknown
 > = async (req, res, next) => {
   try {
-    // commented for local develop
-
     const authUserId = req.session.userId
-    if (!authUserId) {
-      throw createHttpError(401, 'Unauthorized')
-    }
+
     const user = await UserModel.findById(authUserId).select('+email').exec()
     if (!user) {
       throw createHttpError(400, 'Invalid id')
@@ -25,20 +21,21 @@ export const getUsers: RequestHandler<
     const users = await UserModel.find({ _id: { $ne: authUserId } })
       .select('+email')
       .exec()
-
-    // const users = await UserModel.find().select('+email').exec()
     res.status(200).json(users)
   } catch (error) {
     next(error)
   }
 }
 
-export const getUser: RequestHandler = async (req, res, next) => {
+export const getUser: RequestHandler<
+  UserId,
+  unknown,
+  UserDTO,
+  unknown
+> = async (req, res, next) => {
   try {
     const authUserId = req.session.userId
-    if (!authUserId) {
-      throw createHttpError(401, 'Unauthorized')
-    }
+
     if (!idValidate(authUserId)) {
       throw createHttpError(400, 'Invalid id')
     }
@@ -152,9 +149,6 @@ export const updateUser: RequestHandler<
 > = async (req, res, next) => {
   try {
     const authUserId = req.session.userId
-    if (!authUserId) {
-      throw createHttpError(401, 'Unauthorized')
-    }
 
     const { name, password, image } = req.body
     if (!(name || password || image)) {
