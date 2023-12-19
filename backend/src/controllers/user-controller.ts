@@ -5,6 +5,16 @@ import { idValidate } from '../models/note'
 import { UserModel } from '../models/user'
 import { getAge } from '../utils/getAge'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const uploadImage: RequestHandler = (req, res, next) => {
+  // res.send(req.files)
+  try {
+    res.status(200).json({ ok: 'ok' })
+  } catch (e) {
+    next(e)
+  }
+}
+
 export const getUsers: RequestHandler<
   UserId,
   unknown,

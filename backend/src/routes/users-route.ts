@@ -6,8 +6,10 @@ import {
   updateUser,
   login,
   logout,
+  uploadImage,
 } from '../controllers/user-controller'
 import { checkAuth } from '../middleware/auth'
+import { upload } from '../middleware/images-upload'
 
 const router = Router()
 
@@ -17,5 +19,6 @@ router.post('/signup', signUp)
 router.post('/login', login)
 router.post('/logout', logout)
 router.put('/account', checkAuth, updateUser)
+router.post('/images', upload.single('img'), uploadImage)
 
 export default router

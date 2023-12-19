@@ -4,11 +4,11 @@ import validateEnv from './utils/validateEnv'
 
 const PORT = validateEnv.PORT || 5000
 
-mongoose
-  .connect(validateEnv.MONGO_CONNECTION_STRING)
-  .then(() => {
-    app.listen(PORT, () => {
+app.listen(PORT, () => {
+  mongoose
+    .connect(validateEnv.MONGO_CONNECTION_STRING)
+    .then(() => {
       console.log('Server start on port: localhost:' + PORT)
     })
-  })
-  .catch((e) => console.error(e))
+    .catch((e) => console.error(e))
+})
