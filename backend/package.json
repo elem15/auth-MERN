@@ -7,7 +7,7 @@
     "start": "node dist/index.js",
     "dev": "npx nodemon src/index.ts",
     "build": "tsc",
-    "build:full": "cp -rf gridfs.js node_modules\\multer-gridfs-storage\\lib\\gridfs.js && tsc && cd ../frontend && npm run build",
+    "build:full": "cp -rf ./gridfs.js ./node_modules/multer-gridfs-storage/lib/gridfs.js && tsc && cd ../frontend && npm run build",
     "prettier": "npx prettier src test --check",
     "prettier:fix": "npm run prettier -- --write",
     "lint": "eslint ./src/**/*.{tsx,ts,jsx,js} --no-error-on-unmatched-pattern",
