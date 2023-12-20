@@ -1,21 +1,23 @@
 import mongoose from 'mongoose'
 import validateEnv from '../utils/validateEnv'
 import { GridFsStorage } from 'multer-gridfs-storage'
-import Grid from 'gridfs-stream'
 import crypto from 'crypto'
 import multer from 'multer'
 import createHttpError from 'http-errors'
 
 const mongoURI = validateEnv.MONGO_CONNECTION_STRING
 
+mongoose.set('strictQuery', true)
+
 const conn = mongoose.createConnection(mongoURI)
 
-let gfs
+// @ts-ignore
+export let gfs
 
 conn.once('open', () => {
-  gfs = Grid(conn.db, mongoose.mongo)
-  gfs.collection('uploads')
-  console.log('Connection Successful')
+  gfs = new mongoose.mongo.GridFSBucket(conn.db, {
+    bucketName: 'uploads',
+  })
 })
 
 export let filename: string

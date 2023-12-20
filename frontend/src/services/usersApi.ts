@@ -20,6 +20,7 @@ export const usersApi = createApi({
           const { dateOfBirth } = user
           const age = getAge(new Date(), new Date(dateOfBirth))
           user.age = Math.trunc(age)
+          user.img = user.img && `${BASE_URL}/app/users/images/${user.img}`
           return user
         })
       },

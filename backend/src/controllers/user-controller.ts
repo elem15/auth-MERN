@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 import { idValidate } from '../models/note'
 import { UserModel } from '../models/user'
 import { getAge } from '../utils/getAge'
-import { filename } from '../middleware/images-upload'
+import { filename, gfs } from '../middleware/images-upload'
 
 export const uploadImage: RequestHandler = (req, res, next) => {
   try {
@@ -12,6 +12,22 @@ export const uploadImage: RequestHandler = (req, res, next) => {
   } catch (e) {
     next(e)
   }
+}
+
+export const getImage: RequestHandler = (req, res, next) => {
+  gfs
+    .find({
+      filename: req.params.filename,
+    })
+    .toArray((err: Error, files: File[]) => {
+      if (err) {
+        createHttpError(400, 'File loading error')
+      }
+      if (!files || files.length === 0) {
+        createHttpError(404, 'No image file exist')
+      }
+      gfs.openDownloadStreamByName(req.params.filename).pipe(res)
+    })
 }
 
 export const getUsers: RequestHandler<
@@ -91,7 +107,7 @@ export const signUp: RequestHandler<
     if (tooYang || tooOld) {
       throw createHttpError(400, 'Incorrect date of birth')
     }
- 
+
     const newUser = await UserModel.create({
       name,
       email,
@@ -151,7 +167,7 @@ export const logout: RequestHandler = (req, res, next) => {
 }
 
 export const updateUser: RequestHandler<
-  UserId,
+  unknown,
   unknown,
   UserUpdateDTO,
   unknown

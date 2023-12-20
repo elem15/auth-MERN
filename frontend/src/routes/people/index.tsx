@@ -24,6 +24,7 @@ export const People = () => {
         <li key={user._id}>
           <h2 className='text-lg'>{user.name}</h2>
           <p className='text-base'>{user.age}</p>
+          {user?.img && <img src={user.img} alt={user.name} />}
         </li>
       ))}</ul>
     </>

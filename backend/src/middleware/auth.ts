@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express'
 import createHttpError from 'http-errors'
 
-export const checkAuth: RequestHandler<UserId, unknown, unknown, unknown> = (
+export const checkAuth: RequestHandler<unknown, unknown, unknown, unknown> = (
   req,
   _,
   next

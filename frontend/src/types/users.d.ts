@@ -4,7 +4,7 @@ interface User {
   password: string
   dateOfBirth: string
   gender: string
-  image?: unknown
+  img?: string
 }
 interface UserFromApi extends Omit<User, 'password'> {
   _id: string
@@ -15,7 +15,7 @@ interface UserFromApi extends Omit<User, 'password'> {
 interface UserUpdate {
   name: string
   password: string
-  image?: unknown
+  img?: string
 }
 interface UserLogin {
   email: string
