@@ -6,7 +6,6 @@ import { UserModel } from '../models/user'
 import { getAge } from '../utils/getAge'
 import { filename } from '../middleware/images-upload'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const uploadImage: RequestHandler = (req, res, next) => {
   try {
     res.status(201).json({ filename })
@@ -92,14 +91,14 @@ export const signUp: RequestHandler<
     if (tooYang || tooOld) {
       throw createHttpError(400, 'Incorrect date of birth')
     }
-
+ 
     const newUser = await UserModel.create({
       name,
       email,
       password: passwordHash,
       dateOfBirth: date.toISOString(),
       gender,
-      img: filename,
+      img: req.file && filename,
     })
     req.session.userId = newUser._id
     res.status(201).json(newUser)
@@ -180,6 +179,7 @@ export const updateUser: RequestHandler<
       throw createHttpError(404, 'This name is already taken')
     }
     name && (user.name = name)
+    filename && req.file && (user.img = filename)
     password && (user.password = await bcrypt.hash(password, 10))
 
     const updatedUser = await user.save()

@@ -27,7 +27,7 @@ const storage = new GridFsStorage({
         if (err) {
           return reject(err)
         }
-        if (file?.mimetype !== 'image/jpeg' && file?.mimetype !== 'image/png') {
+        if (file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/png') {
           return reject(
             createHttpError(422, 'Only img or png photo format is supported')
           )
