@@ -7,12 +7,12 @@ interface UserDTO {
   password: string
   dateOfBirth: string
   gender: string
-  image: unknown
+  img?: string
 }
 interface UserUpdateDTO {
   name: string
   password: string
-  image: unknown
+  img?: string
 }
 interface UserLoginDTO {
   email: string

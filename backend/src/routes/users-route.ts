@@ -15,7 +15,7 @@ const router = Router()
 
 router.get('/', checkAuth, getUsers)
 router.get('/one', checkAuth, getUser)
-router.post('/signup', signUp)
+router.post('/signup', upload.single('img'), signUp)
 router.post('/login', login)
 router.post('/logout', logout)
 router.put('/account', checkAuth, updateUser)

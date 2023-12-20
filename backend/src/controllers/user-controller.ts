@@ -4,12 +4,12 @@ import bcrypt from 'bcrypt'
 import { idValidate } from '../models/note'
 import { UserModel } from '../models/user'
 import { getAge } from '../utils/getAge'
+import { filename } from '../middleware/images-upload'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const uploadImage: RequestHandler = (req, res, next) => {
-  // res.send(req.files)
   try {
-    res.status(200).json({ ok: 'ok' })
+    res.status(201).json({ filename })
   } catch (e) {
     next(e)
   }
@@ -66,7 +66,7 @@ export const signUp: RequestHandler<
   unknown
 > = async (req, res, next) => {
   try {
-    const { name, email, password, dateOfBirth, gender, image } = req.body
+    const { name, email, password, dateOfBirth, gender } = req.body
     if (!name || !email || !password || !dateOfBirth || !gender) {
       throw createHttpError(
         400,
@@ -79,7 +79,7 @@ export const signUp: RequestHandler<
     }
     const userWithEmail = await UserModel.findOne({ email }).exec()
     if (userWithEmail) {
-      throw createHttpError(404, 'User with this email exist')
+      throw createHttpError(404, 'User with this email already exist')
     }
     const passwordHash = await bcrypt.hash(password, 10)
     if (isNaN(Date.parse(dateOfBirth))) {
@@ -99,7 +99,7 @@ export const signUp: RequestHandler<
       password: passwordHash,
       dateOfBirth: date.toISOString(),
       gender,
-      image,
+      img: filename,
     })
     req.session.userId = newUser._id
     res.status(201).json(newUser)
@@ -160,8 +160,8 @@ export const updateUser: RequestHandler<
   try {
     const authUserId = req.session.userId
 
-    const { name, password, image } = req.body
-    if (!(name || password || image)) {
+    const { name, password } = req.body
+    if (!(name || password)) {
       throw createHttpError(400, 'No fields for update')
     }
     if (!idValidate(authUserId)) {

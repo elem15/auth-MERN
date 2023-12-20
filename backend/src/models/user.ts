@@ -7,7 +7,7 @@ const userSchema = new Schema(
     password: { type: String, required: true, select: false },
     dateOfBirth: { type: String, required: true },
     gender: { type: String, required: true },
-    image: { data: Buffer, type: String },
+    img: { type: String, required: false },
   },
   { timestamps: true }
 )
