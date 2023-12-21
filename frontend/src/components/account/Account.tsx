@@ -1,4 +1,4 @@
-import { FormEvent, useEffect } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import Preloader from '../loader/Preloader'
 import { useGetUserQuery, useUpdateUserMutation } from '../../services/usersApi';
@@ -6,18 +6,21 @@ import { useGetUserQuery, useUpdateUserMutation } from '../../services/usersApi'
 export const Account = () => {
   const navigate = useNavigate();
   const { data, error: getQueryError, isLoading: getQueryIsLoading } = useGetUserQuery()
+  const [file, setFile] = useState<Blob>()
 
-  const [updateUser, { error, isLoading, isSuccess }] = useUpdateUserMutation()
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    const file: File = (e.target.files as FileList)[0];
+    setFile(file)
+  }
+  const [updateUser, { error, isLoading }] = useUpdateUserMutation()
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget as HTMLFormElement)
-    const name = formData.get('name') as string
-    const password = formData.get('password') as string
-    updateUser({ name, password })
+    // const name = formData.get('name') as string
+    // const password = formData.get('password') as string
+    updateUser(formData)
+    setFile(undefined)
   }
-  useEffect(() => {
-    isSuccess && navigate('/people')
-  }, [isSuccess, navigate])
 
   useEffect(() => {
     if (getQueryError) {
@@ -32,7 +35,7 @@ export const Account = () => {
       const e = error as RTKError
       alert(e.data?.error || 'Unknown error');
     }
-  }, [error, navigate])
+  }, [error])
 
   return (
     <>
@@ -43,6 +46,9 @@ export const Account = () => {
         <input type="text" name="name" required className='border-spacing-2 border-2 mb-6' placeholder={data?.name} autoComplete="false" />
         <label htmlFor='password'>New password</label>
         <input type="password" name="password" required className='border-spacing-2 border-2 mb-6' autoComplete="false" />
+        <input type="file" name="img" accept="image/png, image/jpeg" onChange={handleChange} className='border-spacing-2 border-2 mb-6' />
+
+        {data?.img && !file && <img src={data.img} alt='Avatar of user' />}
         <button type="submit">submit</button>
       </form>
     </>

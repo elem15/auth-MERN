@@ -2,6 +2,13 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { BASE_URL } from '../helpers/constants'
 import { getAge } from '../helpers/getAge'
 
+const convertUser = (user: UserFromApi) => {
+  const { dateOfBirth } = user
+  const age = getAge(new Date(), new Date(dateOfBirth))
+  user.age = Math.trunc(age)
+  user.img = user.img && `${BASE_URL}/app/users/images/${user.img}`
+  return user
+}
 export const usersApi = createApi({
   reducerPath: 'usersApi',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
@@ -16,41 +23,41 @@ export const usersApi = createApi({
         value: UserFromApi[] | Promise<UserFromApi[]>,  
       ) => {
         const users = await value
-        return users.map((user) => {
-          const { dateOfBirth } = user
-          const age = getAge(new Date(), new Date(dateOfBirth))
-          user.age = Math.trunc(age)
-          user.img = user.img && `${BASE_URL}/app/users/images/${user.img}`
-          return user
-        })
+        return users.map(convertUser)
       },
     }),
     getUser: builder.query<UserFromApi, void>({
       query: () => ({
         url: `app/users/one`
       }),    
-      providesTags: ['User'],    
+      providesTags: ['User'], 
+      transformResponse: async (
+        value: UserFromApi | Promise<UserFromApi>,  
+      ) => {
+        const user = await value
+        return convertUser(user)
+      },
     }),
-    signUp: builder.mutation<UserFromApi, User>({
+    signUp: builder.mutation<UserFromApi, FormData>({
       query: (body) => ({
         url: `app/users/signup`,
         method: 'POST',
-        body,
+        body: body,
+        formData: true,
         headers: {
-          'Content-Type': 'application/json',
           'Access-Control-Allow-Headers': "Accept, Content-Type, Authorization, X-Requested-With",
           'Access-Control-Allow-Origin': BASE_URL
         },
       }),
       invalidatesTags: ['Users', 'User'],
     }),
-    updateUser: builder.mutation<UserFromApi, UserUpdate>({
+    updateUser: builder.mutation<UserFromApi, FormData>({
       query: (body) => ({
         url: `app/users/account`,
         method: 'PUT',
         body,
+        formData: true,
         headers: {
-          'Content-Type': 'application/json',
           'Access-Control-Allow-Headers': "Accept, Content-Type, Authorization, X-Requested-With",
           'Access-Control-Allow-Origin': BASE_URL
         },

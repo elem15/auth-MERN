@@ -6,16 +6,27 @@ import { useSignUpMutation } from '../../services/usersApi';
 export const Registration = () => {
   const navigate = useNavigate();
   const [signUp, { error, isLoading, isSuccess }] = useSignUpMutation()
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget as HTMLFormElement)
-    const name = formData.get('name') as string
-    const email = formData.get('email') as string
-    const password = formData.get('password') as string
-    const dateOfBirth = formData.get('dateOfBirth') as string
-    const gender = formData.get('gender') as string
-    signUp({ name, email, password, dateOfBirth, gender })
+    // const name = formData.get('name') as string
+    // const email = formData.get('email') as string
+    // const password = formData.get('password') as string
+    // const dateOfBirth = formData.get('dateOfBirth') as string
+    // const gender = formData.get('gender') as string
+    // const reqFormData = new FormData()
+    // reqFormData.append('name', name)
+    // reqFormData.append('email', email)
+    // reqFormData.append('password', password)
+    // reqFormData.append('dateOfBirth', dateOfBirth)
+    // reqFormData.append('gender', gender)
+
+    // file && formData.append('img', file);
+
+    signUp(formData)
   }
+
   useEffect(() => {
     isSuccess && navigate('/people')
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -43,6 +54,7 @@ export const Registration = () => {
           <option value="male">male</option>
           <option value="female">female</option>
         </select>
+        <input type="file" name="img" accept="image/png, image/jpeg" className='border-spacing-2 border-2 mb-6' />
         <button type="submit">submit</button>
       </form>
     </>
