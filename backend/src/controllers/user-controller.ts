@@ -176,7 +176,7 @@ export const updateUser: RequestHandler<
     const authUserId = req.session.userId
 
     const { name, password } = req.body
-    if (!(name || password)) {
+    if (!name && !password && !req.file) {
       throw createHttpError(400, 'No fields for update')
     }
     if (!idValidate(authUserId)) {
@@ -191,7 +191,7 @@ export const updateUser: RequestHandler<
     const userWithName = await UserModel.findOne({ name })
       .select('+password')
       .exec()
-    if (userWithName) {
+    if (userWithName && name !== user.name) {
       throw createHttpError(404, 'This name is already taken')
     }
     name && (user.name = name)

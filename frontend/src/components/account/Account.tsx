@@ -43,9 +43,9 @@ export const Account = () => {
       <h1 className='text-center text-xl'>Update account</h1>
       <form className='flex flex-col mx-auto w-36' onSubmit={handleSubmit} autoComplete="off">
         <label htmlFor='name'>New name</label>
-        <input type="text" name="name" required className='border-spacing-2 border-2 mb-6' placeholder={data?.name} autoComplete="false" />
+        <input type="text" name="name" className='border-spacing-2 border-2 mb-6' placeholder={data?.name} autoComplete="false" />
         <label htmlFor='password'>New password</label>
-        <input type="password" name="password" required className='border-spacing-2 border-2 mb-6' autoComplete="false" />
+        <input type="password" name="password" className='border-spacing-2 border-2 mb-6' autoComplete="false" />
         <input type="file" name="img" accept="image/png, image/jpeg" onChange={handleChange} className='border-spacing-2 border-2 mb-6' />
 
         {data?.img && !file && <img src={data.img} alt='Avatar of user' />}
