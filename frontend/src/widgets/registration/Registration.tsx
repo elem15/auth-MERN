@@ -1,6 +1,6 @@
 import { FormEvent, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
-import Preloader from '../../components/loader/Preloader'
+import Preloader from '../loader/Preloader'
 import { useSignUpMutation } from '../../services/usersApi';
 
 export const Registration = () => {

@@ -43,7 +43,6 @@ export const usersApi = createApi({
         url: `app/users/signup`,
         method: 'POST',
         body: body,
-        formData: true,
         headers: {
           'Access-Control-Allow-Headers': "Accept, Content-Type, Authorization, X-Requested-With",
           'Access-Control-Allow-Origin': BASE_URL
@@ -56,7 +55,6 @@ export const usersApi = createApi({
         url: `app/users/account`,
         method: 'PUT',
         body,
-        formData: true,
         headers: {
           'Access-Control-Allow-Headers': "Accept, Content-Type, Authorization, X-Requested-With",
           'Access-Control-Allow-Origin': BASE_URL

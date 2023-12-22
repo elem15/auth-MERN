@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import Preloader from '../../components/loader/Preloader'
+import Preloader from '../../widgets/loader/Preloader'
 import { useGetUsersQuery } from '../../services/usersApi'
 import { useNavigate } from 'react-router'
 

@@ -8,7 +8,7 @@ import { ErrorPage } from './error-page'
 import { store } from './app/store'
 import { Provider } from 'react-redux'
 import { People } from './routes/people';
-import { AccountPage } from './routes/account';
+import { Account } from './routes/account';
 import { Home } from './routes/home';
 
 const router = createHashRouter([
@@ -29,7 +29,7 @@ const router = createHashRouter([
       },
       {
         path: "account",
-        element: <AccountPage />,
+        element: <Account />,
         errorElement: <ErrorPage />,
       },
     ]
