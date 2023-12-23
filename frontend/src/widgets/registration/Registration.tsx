@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +14,7 @@ import { Button } from '../../components/button/Button';
 export const Registration = () => {
   const navigate = useNavigate();
   const [signUp, { error, isLoading, isSuccess }] = useSignUpMutation()
-
+  const [file, setFile] = useState<Blob>()
   const validationSchema = z.object({
     name: z.string().min(6),
     email: z.string().email("Please enter a valid email"),
@@ -29,22 +29,29 @@ export const Registration = () => {
       invalid_type_error: "That's not a date!",
     })
       .min(new Date("1917-01-01"), { message: "Too old" })
-      .max(new Date('2017-01-01'), { message: "Too young!" })
+      .max(new Date('2017-01-01'), { message: "Too young!" }),
+    gender: z.string()
   })
     .required();
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: User) => {
     console.log(data)
-    // const formData = new FormData()
+    data.dateOfBirth = data.dateOfBirth instanceof Date ? data.dateOfBirth.toISOString() : data.dateOfBirth
+    const formData = new FormData()
+    for (const key in data) {
+      const k = key as keyof typeof data
+      //@ts-expect-error
+      formData.append(k, data[k])
+    }
+    file && formData.append('img', file)
 
-    // signUp(formData)
+    signUp(formData)
   }
 
   const {
     register,
     handleSubmit,
     setValue,
-    getValues,
     trigger,
     formState: { errors, isValid },
   } = useForm<User>({
@@ -52,26 +59,6 @@ export const Registration = () => {
     mode: 'onBlur',
     reValidateMode: 'onBlur',
   });
-
-  const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget as HTMLFormElement)
-    // const name = formData.get('name') as string
-    // const email = formData.get('email') as string
-    // const password = formData.get('password') as string
-    // const dateOfBirth = formData.get('dateOfBirth') as string
-    // const gender = formData.get('gender') as string
-    // const reqFormData = new FormData()
-    // reqFormData.append('name', name)
-    // reqFormData.append('email', email)
-    // reqFormData.append('password', password)
-    // reqFormData.append('dateOfBirth', dateOfBirth)
-    // reqFormData.append('gender', gender)
-
-    // file && formData.append('img', file);
-
-    signUp(formData)
-  }
 
   useEffect(() => {
     isSuccess && navigate('/people')
@@ -92,6 +79,10 @@ export const Registration = () => {
     }
   }
 
+  const imageOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target?.files as FileList
+    setFile(files[0])
+  }
 
   return (
     <>
@@ -105,12 +96,18 @@ export const Registration = () => {
         <Input type="password" labelText="Password" fieldRegister={register("password")}
           error={errors.password?.message} />
         <Input type="date" min="1917-01-01" max='2017-01-01' labelText="Date of birth" onChange={dateOnChange} error={errors.dateOfBirth?.message} />
-        <select name="gender"  >
-          <option value="">gender</option>
-          <option value="male">male</option>
-          <option value="female">female</option>
-        </select>
-        <input type="file" name="img" accept="image/png, image/jpeg" className='border-spacing-2 border-2 mb-6' />
+        <fieldset className="flex flex-col mb-4 content-start flex-wrap">
+          <legend className="text-left font-semibold mb-1 text-green-900">Select a gender</legend>
+          <div className='text-start'>
+            <input type="radio" value="male" {...register("gender")} />
+            <label htmlFor="male" className='ml-2'>Male</label>
+          </div>
+          <div>
+            <input type="radio" value="female" {...register("gender")} />
+            <label htmlFor="female" className='ml-2'>Female</label>
+          </div>
+        </fieldset>
+        <input type="file" onChange={imageOnChange} name="img" accept="image/png, image/jpeg" className='border-spacing-2 border-2 mb-6' />
         <div>
           <Button disabled={!isValid || isLoading}>Submit</Button>
         </div>
