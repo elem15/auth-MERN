@@ -2,7 +2,7 @@ import { UseFormRegisterReturn } from "react-hook-form";
 import { cn } from '../../shared/classNames';
 
 export const Input = (props: FormFieldProps<UseFormRegisterReturn>) => {
-  const { labelText, fieldRegister, error, min, max, type, ...restProps } = props;
+  const { labelText, fieldRegister, error, min, max, type, placeholder, ...restProps } = props;
 
   return (
     <div className="flex flex-col mb-4">
@@ -12,6 +12,7 @@ export const Input = (props: FormFieldProps<UseFormRegisterReturn>) => {
         type={type || 'text'}
         min={min}
         max={max}
+        placeholder={placeholder}
         {...restProps}
         {...fieldRegister}
       />

@@ -10,6 +10,8 @@ import { H1 } from '../../components/h1/H1';
 import { Form } from '../../components/form/Form';
 import { Input } from '../../components/input/Input';
 import { Button } from '../../components/button/Button';
+import { RadioGroup } from '../../components/radio-group/RadioGroup';
+import { FileInput } from '../../components/fileInput/FileInput';
 
 export const Registration = () => {
   const navigate = useNavigate();
@@ -24,24 +26,25 @@ export const Registration = () => {
         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
         "Use letters in different cases and numbers"
       ),
-    dateOfBirth: z.date({
+    confirmPassword: z.string(),
+    dateObj: z.date({
       required_error: "Please select a date and time",
       invalid_type_error: "That's not a date!",
     })
       .min(new Date("1917-01-01"), { message: "Too old" })
       .max(new Date('2017-01-01'), { message: "Too young!" }),
     gender: z.string()
+  }).refine((data) => data.password === data.confirmPassword, {
+    path: ['confirmPassword'],
+    message: 'Passwords does not match'
   })
-    .required();
 
   const onSubmit = (data: User) => {
-    console.log(data)
-    data.dateOfBirth = data.dateOfBirth instanceof Date ? data.dateOfBirth.toISOString() : data.dateOfBirth
+    data.dateOfBirth = data.dateObj instanceof Date ? data.dateObj.toISOString() : ''
     const formData = new FormData()
     for (const key in data) {
       const k = key as keyof typeof data
-      //@ts-expect-error
-      formData.append(k, data[k])
+      k !== 'confirmPassword' && k !== 'img' && k !== 'dateObj' && formData.append(k, data[k])
     }
     file && formData.append('img', file)
 
@@ -74,7 +77,7 @@ export const Registration = () => {
   const dateOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const d = e.target.value as string
     if (!isNaN(Date.parse(d))) {
-      setValue('dateOfBirth', new Date(d))
+      setValue('dateObj', new Date(d))
       trigger()
     }
   }
@@ -88,26 +91,18 @@ export const Registration = () => {
     <>
       {isLoading && <Preloader />}
       <H1>Create new account</H1>
-      <Form className='flex flex-col mx-auto w-36' onSubmit={handleSubmit(onSubmit)} >
+      <Form onSubmit={handleSubmit(onSubmit)} >
         <Input type="text" labelText="Name" fieldRegister={register("name")}
           error={errors.name?.message} />
         <Input type="email" labelText="Email" fieldRegister={register("email")}
           error={errors.email?.message} />
         <Input type="password" labelText="Password" fieldRegister={register("password")}
           error={errors.password?.message} />
-        <Input type="date" min="1917-01-01" max='2017-01-01' labelText="Date of birth" onChange={dateOnChange} error={errors.dateOfBirth?.message} />
-        <fieldset className="flex flex-col mb-4 content-start flex-wrap">
-          <legend className="text-left font-semibold mb-1 text-green-900">Select a gender</legend>
-          <div className='text-start'>
-            <input type="radio" value="male" {...register("gender")} />
-            <label htmlFor="male" className='ml-2'>Male</label>
-          </div>
-          <div>
-            <input type="radio" value="female" {...register("gender")} />
-            <label htmlFor="female" className='ml-2'>Female</label>
-          </div>
-        </fieldset>
-        <input type="file" onChange={imageOnChange} name="img" accept="image/png, image/jpeg" className='border-spacing-2 border-2 mb-6' />
+        <Input type="password" labelText="Password confirm" fieldRegister={register("confirmPassword")}
+          error={errors.confirmPassword?.message} />
+        <Input type="date" min="1917-01-01" max='2017-01-01' labelText="Date of birth" onBlur={dateOnChange} error={errors.dateObj?.message} />
+        <RadioGroup fieldRegister={register("gender")} radioList={['male', 'female']} />
+        <FileInput labelText="Your avatar" onChange={imageOnChange} />
         <div>
           <Button disabled={!isValid || isLoading}>Submit</Button>
         </div>

@@ -6,19 +6,28 @@ interface FormFieldProps<T>
   error?: string;
   min?: string;
   max?: string;
+  placeholder?: string;
 }
-interface ButtonFieldProps
+
+interface FileInputProps
+  extends React.HTMLAttributes<HTMLInputElement> {
+  type?: string;
+  labelText: string;
+  error?: string;
+}
+
+interface ButtonProps
   extends React.HTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   disabled?: boolean;
   error?: string;
 }
-interface LinkFieldProps
+interface LinkProps
   extends React.HTMLAttributes<HTMLLinkElement> {
   children: React.ReactNode;
   to: string;
 }
-interface ElementFieldProps
+interface ElementProps
   extends React.HTMLAttributes<HTMLHtmlElement> {
   children: React.ReactNode;
   className?: string;
@@ -27,4 +36,8 @@ interface FormProps
   extends React.HTMLAttributes<HTMLFormElement> {
   children: React.ReactNode;
   className?: string;
+}
+interface RadioGroupProps<T> {
+  radioList: string[];
+  fieldRegister?: T;
 }

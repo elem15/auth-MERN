@@ -1,4 +1,4 @@
-export const ButtonLink = (props: ButtonFieldProps) => {
+export const ButtonLink = (props: ButtonProps) => {
   const { children, disabled, ...restProps } = props;
 
   return (

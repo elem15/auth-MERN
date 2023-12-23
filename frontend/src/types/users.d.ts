@@ -2,7 +2,9 @@ interface User {
   name: string
   email: string
   password: string
-  dateOfBirth: Date | string
+  confirmPassword: string
+  dateOfBirth: string
+  dateObj: Date
   gender: string
   img?: string
 }
@@ -15,6 +17,7 @@ interface UserFromApi extends Omit<User, 'password'> {
 interface UserUpdate {
   name: string
   password: string
+  confirmPassword: string
   img?: string
 }
 interface UserLogin {

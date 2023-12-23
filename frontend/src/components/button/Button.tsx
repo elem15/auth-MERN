@@ -1,6 +1,6 @@
 import { cn } from '../../shared/classNames';
 
-export const Button = ({ children, disabled, error, ...restProps }: ButtonFieldProps) => {
+export const Button = ({ children, disabled, error, ...restProps }: ButtonProps) => {
 
   return (
     <button
