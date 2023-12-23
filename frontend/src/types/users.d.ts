@@ -2,7 +2,7 @@ interface User {
   name: string
   email: string
   password: string
-  dateOfBirth: string
+  dateOfBirth: Date
   gender: string
   img?: string
 }

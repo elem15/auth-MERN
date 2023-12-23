@@ -1,13 +1,59 @@
-import { FormEvent, useEffect } from 'react'
+import { ChangeEvent, FormEvent, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
-import Preloader from '../loader/Preloader'
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod"
+
+import Preloader from '../../components/loader/Preloader'
 import { useSignUpMutation } from '../../services/usersApi';
+import { H1 } from '../../components/h1/H1';
+import { Form } from '../../components/form/Form';
+import { Input } from '../../components/input/Input';
+import { Button } from '../../components/button/Button';
 
 export const Registration = () => {
   const navigate = useNavigate();
   const [signUp, { error, isLoading, isSuccess }] = useSignUpMutation()
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const validationSchema = z.object({
+    name: z.string().min(6),
+    email: z.string().email("Please enter a valid email"),
+    password: z.string()
+      .min(6)
+      .regex(
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
+        "Use letters in different cases and numbers"
+      ),
+    dateOfBirth: z.date({
+      required_error: "Please select a date and time",
+      invalid_type_error: "That's not a date!",
+    })
+      .min(new Date("1917-01-01"), { message: "Too old" })
+      .max(new Date('2017-01-01'), { message: "Too young!" })
+  })
+    .required();
+
+  const onSubmit = (data) => {
+    console.log(data)
+    // const formData = new FormData()
+
+    // signUp(formData)
+  }
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    trigger,
+    formState: { errors, isValid },
+  } = useForm<User>({
+    resolver: zodResolver(validationSchema),
+    mode: 'onBlur',
+    reValidateMode: 'onBlur',
+  });
+
+  const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget as HTMLFormElement)
     // const name = formData.get('name') as string
@@ -38,25 +84,37 @@ export const Registration = () => {
     }
   }, [error])
 
+  const dateOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const d = e.target.value as string
+    if (!isNaN(Date.parse(d))) {
+      setValue('dateOfBirth', new Date(d))
+      trigger()
+    }
+  }
+
+
   return (
     <>
       {isLoading && <Preloader />}
-      <h1 className='text-center text-xl'>Create new account</h1>
-      <hr />
-      <br />
-      <form className='flex flex-col mx-auto w-36' onSubmit={handleSubmit} >
-        <input type="text" name="name" required className='border-spacing-2 border-2 mb-6' />
-        <input type="email" name="email" required className='border-spacing-2 border-2 mb-6' />
-        <input type="password" name="password" required className='border-spacing-2 border-2 mb-6' />
-        <input type="date" name="dateOfBirth" required className='border-spacing-2 border-2 mb-6' />
-        <select name="gender" required className='border-spacing-2 border-2 mb-6' >
+      <H1>Create new account</H1>
+      <Form className='flex flex-col mx-auto w-36' onSubmit={handleSubmit(onSubmit)} >
+        <Input type="text" labelText="Name" fieldRegister={register("name")}
+          error={errors.name?.message} />
+        <Input type="email" labelText="Email" fieldRegister={register("email")}
+          error={errors.email?.message} />
+        <Input type="password" labelText="Password" fieldRegister={register("password")}
+          error={errors.password?.message} />
+        <Input type="date" min="1917-01-01" max='2017-01-01' labelText="Date of birth" onChange={dateOnChange} error={errors.dateOfBirth?.message} />
+        <select name="gender"  >
           <option value="">gender</option>
           <option value="male">male</option>
           <option value="female">female</option>
         </select>
         <input type="file" name="img" accept="image/png, image/jpeg" className='border-spacing-2 border-2 mb-6' />
-        <button type="submit">submit</button>
-      </form>
+        <div>
+          <Button disabled={!isValid || isLoading}>Submit</Button>
+        </div>
+      </Form>
     </>
   )
 }

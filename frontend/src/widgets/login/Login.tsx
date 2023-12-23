@@ -4,11 +4,12 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod"
 
-
-import Preloader from '../loader/Preloader'
+import Preloader from '../../components/loader/Preloader'
 import { useLoginMutation } from '../../services/usersApi'
 import { Input } from '../../components/input/Input'
 import { Button } from '../../components/button/Button';
+import { H1 } from '../../components/h1/H1';
+import { Form } from '../../components/form/Form';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export const Login = () => {
 
   const validationSchema = z.object({
     email: z.string().email("Please enter a valid email"),
-    password: z.string().min(5)
+    password: z.string().min(6)
   })
     .required();
 
@@ -48,19 +49,20 @@ export const Login = () => {
   return (
     <>
       {isLoading && <Preloader />}
-      <h1 className='text-center text-xl font-semibold'>Log in to your account</h1>
-      <br />
-      <form className='flex flex-col mx-auto mb-5 w-56' onSubmit={handleSubmit(onSubmit)} >
+
+      <H1>Log in to your account</H1>
+
+      <Form onSubmit={handleSubmit(onSubmit)} >
         <Input labelText="Email" fieldRegister={register("email")}
           error={errors.email?.message} />
 
         <Input type="password" labelText="Password" fieldRegister={register("password")}
           error={errors.password?.message} />
 
-        <div className='text-center'>
-          <Button disabled={!isValid}>Submit</Button>
+        <div>
+          <Button disabled={!isValid || isLoading}>Submit</Button>
         </div>
-      </form>
+      </Form>
     </>
   )
 }

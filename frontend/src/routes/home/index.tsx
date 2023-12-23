@@ -1,6 +1,7 @@
 import { Registration } from '../../widgets/registration/Registration'
 import { useState } from 'react'
 import { Login } from '../../widgets/login/Login'
+import { ButtonLink } from '../../components/button/ButtonLink'
 
 export const Home = () => {
   const flags = {
@@ -17,7 +18,7 @@ export const Home = () => {
             <Registration />
             <div>Already registered?</div>
             <div>
-              <button onClick={() => setSignType(buttonText)} className='text-blue-600 hover:text-blue-500 active:text-blue-800 font-semibold'>{buttonText}</button>
+              <ButtonLink onClick={() => setSignType(buttonText)}>{buttonText}</ButtonLink>
             </div>
           </div>)}
         {signType === 'login' &&
@@ -25,7 +26,7 @@ export const Home = () => {
             <Login />
             <div>Don`t have an account?</div>
             <div>
-              <button onClick={() => setSignType(buttonText)} className='text-blue-600 hover:text-blue-500 active:text-blue-800 font-semibold'>{buttonText}</button>
+              <ButtonLink onClick={() => setSignType(buttonText)}>{buttonText}</ButtonLink>
             </div>
           </div>)}
       </div>

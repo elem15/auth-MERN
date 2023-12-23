@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { BASE_URL } from '../helpers/constants'
-import { getAge } from '../helpers/getAge'
+import { BASE_URL } from '../shared/constants'
+import { getAge } from '../shared/getAge'
 
 const convertUser = (user: UserFromApi) => {
   const { dateOfBirth } = user
