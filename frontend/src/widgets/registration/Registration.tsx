@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod"
+import { toast } from 'react-custom-alert';
 
 import Preloader from '../../components/loader/Preloader'
 import { useSignUpMutation } from '../../services/usersApi';
@@ -70,7 +71,7 @@ export const Registration = () => {
   useEffect(() => {
     if (error) {
       const e = error as RTKError
-      alert(e.data?.error || 'Unknown error');
+      toast.warning(e.data?.error || 'Unknown error');
     }
   }, [error])
 

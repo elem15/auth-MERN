@@ -10,6 +10,7 @@ import { Input } from '../../components/input/Input'
 import { Button } from '../../components/button/Button';
 import { H1 } from '../../components/h1/H1';
 import { Form } from '../../components/form/Form';
+import { toast } from 'react-custom-alert';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ export const Login = () => {
   useEffect(() => {
     if (error) {
       const e = error as RTKError
-      alert(e.data?.error || 'Unknown error')
+      toast.warning(e.data?.error || 'Unknown error')
     }
   }, [error])
 
@@ -51,7 +52,6 @@ export const Login = () => {
       {isLoading && <Preloader />}
 
       <H1>Log in to your account</H1>
-
       <Form onSubmit={handleSubmit(onSubmit)} >
         <Input labelText="Email" fieldRegister={register("email")}
           error={errors.email?.message} />

@@ -4,6 +4,7 @@ import { useGetUsersQuery } from '../../services/usersApi'
 import { useNavigate } from 'react-router'
 import { Card } from '../../components/card/Card'
 import { Image } from '../../components/image/Image'
+import { toast } from 'react-custom-alert'
 
 export const People = () => {
   const navigate = useNavigate()
@@ -11,7 +12,7 @@ export const People = () => {
   useEffect(() => {
     if (error) {
       const e = error as RTKError
-      alert(e.data?.error || 'Unknown error');
+      toast.warning(e.data?.error || 'Unknown error');
       navigate('/')
     }
   }, [error, navigate])
