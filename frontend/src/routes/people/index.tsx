@@ -20,19 +20,19 @@ export const People = () => {
     <>
       {isLoading && <Preloader />}
 
-      {data && <>
-        <h1 className='text-center text-xl'>All users except you</h1>
+      {data && <div className='mt-2 mx-auto'>
+        <h1 className='text-center text-2xl font-semibold'>All users except you</h1>
 
-        <ul className='flex flex-wrap'>{data.map(user => (
+        <ul className='flex flex-wrap justify-center'>{data.map(user => (
           <li key={user._id}>
             <Card>
               <Image src={user.img} alt={user.name} />
               <h2 className='text-lg'>Name: {user.name}</h2>
-              <p className='text-lg'>Age: {user.age}</p>
+              <p className='text-lg w-full'>Age: {user.age}</p>
             </Card>
           </li>
         ))}</ul>
-      </>}
+      </div>}
     </>
   )
 }
