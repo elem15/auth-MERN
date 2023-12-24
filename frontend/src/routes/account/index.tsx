@@ -112,7 +112,7 @@ export const Account = () => {
               fieldRegister={register("confirmPassword")} error={errors.confirmPassword?.message} />
             <FileInput onChange={handleChange} labelText='Load new avatar' />
             <div className='text-center w-full'>
-              <Button>Submit</Button>
+              <Button disabled={isLoading || getQueryIsLoading}>Submit</Button>
             </div>
           </Form>
         </div>}
