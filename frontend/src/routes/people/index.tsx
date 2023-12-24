@@ -27,7 +27,7 @@ export const People = () => {
         <ul className='flex flex-wrap justify-center'>{data.map(user => (
           <li key={user._id}>
             <Card>
-              <Image src={user.img} alt={user.name} />
+              <Image src={user.img} alt={user.name} width={256} height={256} isLoading={isLoading} />
               <h2 className='text-lg'>Name: {user.name}</h2>
               <p className='text-lg w-full'>Age: {user.age}</p>
             </Card>

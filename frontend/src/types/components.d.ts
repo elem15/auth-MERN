@@ -40,6 +40,7 @@ interface FormProps
 interface ImageProps
   extends Partial<HTMLImageElement> {
   className?: string;
+  isLoading?: boolean
 }
 interface RadioGroupProps<T> {
   radioList: string[];

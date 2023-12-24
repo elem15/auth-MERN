@@ -87,12 +87,12 @@ export const Account = () => {
   return (
     <>
       {(isLoading || getQueryIsLoading) && <Preloader />}
-      {true &&
+      {data &&
         <div className='flex flex-col items-center justify-center my-1'>
           <H1>Update account</H1>
 
           <figure className='w-64 flex flex-col items-center my-1'>
-            <Image src={data?.img} alt='Avatar of user' />
+            <Image src={data?.img} width={256} height={256} alt='Avatar of user' />
             <figcaption className='text-center w-full'>{figcaption}</figcaption>
           </figure>
 
