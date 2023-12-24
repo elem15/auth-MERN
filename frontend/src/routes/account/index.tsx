@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useMemo, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import Preloader from '../../components/loader/Preloader'
 import { useGetUserQuery, useUpdateUserMutation } from '../../services/usersApi';
@@ -10,6 +10,9 @@ import { Button } from '../../components/button/Button';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Image } from '../../components/image/Image';
+
+const CAPTIONS = ['Your current avatar', 'Your previous avatar, it will be updated after confirming the form']
 
 export const Account = () => {
   const navigate = useNavigate();
@@ -17,13 +20,12 @@ export const Account = () => {
   const [updateUser, { error, isLoading, isSuccess }] = useUpdateUserMutation()
 
   const [file, setFile] = useState<Blob>()
-  const captions = useMemo(() => ['Your current avatar', 'Your previous avatar, it will be updated after confirming the form'], [])
-  const [figcaption, setFigcaption] = useState(captions[0])
+  const [figcaption, setFigcaption] = useState(CAPTIONS[0])
 
   useEffect(() => {
-    file && setFigcaption(captions[1])
-    !file && isSuccess && setFigcaption(captions[0])
-  }, [captions, file, isSuccess])
+    file && setFigcaption(CAPTIONS[1])
+    !file && isSuccess && setFigcaption(CAPTIONS[0])
+  }, [file, isSuccess])
 
   const validationSchema = z.object({
     name: z.string().min(6),
@@ -84,10 +86,10 @@ export const Account = () => {
     <>
       {(isLoading || getQueryIsLoading) && <Preloader />}
       {true &&
-        <div className='text-center'>
-          <figure>
-            {data?.img && <img src={data.img} alt='Avatar of user' />}
-            <figcaption>{figcaption}</figcaption>
+        <div className='flex flex-col items-center justify-center my-12'>
+          <figure className='w-64 flex flex-col items-center'>
+            <Image src={data?.img} alt='Avatar of user' />
+            <figcaption className='text-center w-full'>{figcaption}</figcaption>
           </figure>
 
           <H1>Update account</H1>
@@ -99,7 +101,7 @@ export const Account = () => {
             <Input type="password" labelText='Confirm password'
               fieldRegister={register("confirmPassword")} error={errors.confirmPassword?.message} />
             <FileInput onChange={handleChange} labelText='Load new avatar' />
-            <div>
+            <div className='text-center w-full'>
               <Button disabled={!isValid || isLoading}>Submit</Button>
             </div>
           </Form>

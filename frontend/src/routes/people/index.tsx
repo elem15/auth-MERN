@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 import Preloader from '../../components/loader/Preloader'
 import { useGetUsersQuery } from '../../services/usersApi'
 import { useNavigate } from 'react-router'
+import { Card } from '../../components/card/Card'
+import { Image } from '../../components/image/Image'
 
 export const People = () => {
   const navigate = useNavigate()
@@ -21,11 +23,13 @@ export const People = () => {
       {data && <>
         <h1 className='text-center text-xl'>All users except you</h1>
 
-        <ul>{data.map(user => (
+        <ul className='flex flex-wrap'>{data.map(user => (
           <li key={user._id}>
-            <h2 className='text-lg'>{user.name}</h2>
-            <p className='text-base'>{user.age}</p>
-            {user?.img && <img src={user.img} alt={user.name} />}
+            <Card>
+              <Image src={user.img} alt={user.name} />
+              <h2 className='text-lg'>Name: {user.name}</h2>
+              <p className='text-lg'>Age: {user.age}</p>
+            </Card>
           </li>
         ))}</ul>
       </>}

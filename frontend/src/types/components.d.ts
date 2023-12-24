@@ -28,13 +28,17 @@ interface LinkProps
   to: string;
 }
 interface ElementProps
-  extends React.HTMLAttributes<HTMLHtmlElement> {
+  extends Partial<HTMLHtmlElement> {
   children: React.ReactNode;
   className?: string;
 }
 interface FormProps
   extends React.HTMLAttributes<HTMLFormElement> {
   children: React.ReactNode;
+  className?: string;
+}
+interface ImageProps
+  extends Partial<HTMLImageElement> {
   className?: string;
 }
 interface RadioGroupProps<T> {
