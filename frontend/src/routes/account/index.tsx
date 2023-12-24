@@ -53,7 +53,7 @@ export const Account = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<UserUpdate>({
     resolver: zodResolver(validationSchema),
     mode: 'onBlur',
@@ -112,7 +112,7 @@ export const Account = () => {
               fieldRegister={register("confirmPassword")} error={errors.confirmPassword?.message} />
             <FileInput onChange={handleChange} labelText='Load new avatar' />
             <div className='text-center w-full'>
-              <Button disabled={isLoading || getQueryIsLoading}>Submit</Button>
+              <Button disabled={!isValid || isLoading || getQueryIsLoading}>Submit</Button>
             </div>
           </Form>
         </div>}

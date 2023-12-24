@@ -18,6 +18,7 @@ export const Registration = () => {
   const navigate = useNavigate();
   const [signUp, { error, isLoading, isSuccess }] = useSignUpMutation()
   const [file, setFile] = useState<Blob>()
+
   const validationSchema = z.object({
     name: z.string().min(6, 'Name must contain at least 6 character(s)')
       .regex(/^[a-zA-Z0-9_-]+( [a-zA-Z0-9_-]+)*$/,
@@ -70,6 +71,7 @@ export const Registration = () => {
     isSuccess && navigate('/people')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess])
+
   useEffect(() => {
     if (error) {
       const e = error as RTKError
