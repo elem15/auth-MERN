@@ -4,8 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-custom-alert';
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import Preloader from '../../components/loader/Preloader'
 
+import Preloader from '../../components/loader/Preloader'
 import { useGetUserQuery, useUpdateUserMutation } from '../../services/usersApi';
 import { H1 } from '../../components/h1/H1';
 import { Form } from '../../components/form/Form';
@@ -34,9 +34,12 @@ export const Account = () => {
   }, [isSuccess])
 
   const validationSchema = z.object({
-    name: z.string().min(6).or(z.literal('')),
+    name: z.string().min(6, 'Name must contain at least 6 character(s)')
+      .regex(/^[a-zA-Z0-9_-]+( [a-zA-Z0-9_-]+)*$/,
+        'Please enter a name using English letters without spaces, numbers are acceptable')
+      .or(z.literal('')),
     password: z.string()
-      .min(6)
+      .min(6, 'Password must contain at least 6 character(s)')
       .regex(
         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
         "Use letters in different cases and numbers"
@@ -44,7 +47,7 @@ export const Account = () => {
     confirmPassword: z.string().or(z.literal('')),
   }).refine((data) => data.password === data.confirmPassword, {
     path: ['confirmPassword'],
-    message: 'Passwords does not match'
+    message: "Passwords do not match"
   })
 
   const {
@@ -105,7 +108,7 @@ export const Account = () => {
               fieldRegister={register("name")} error={errors.name?.message} />
             <Input type="password" labelText='New password'
               fieldRegister={register("password")} error={errors.password?.message} />
-            <Input type="password" labelText='Confirm password'
+            <Input type="password" labelText='Confirm Password'
               fieldRegister={register("confirmPassword")} error={errors.confirmPassword?.message} />
             <FileInput onChange={handleChange} labelText='Load new avatar' />
             <div className='text-center w-full'>

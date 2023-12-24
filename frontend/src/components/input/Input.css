@@ -1,0 +1,9 @@
+/* fix auto-fill white background */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  box-shadow: 0 0 0 1000px #fff inset !important;
+  caret-color: #000 !important;
+
+  -webkit-text-fill-color: #000 !important;
+}

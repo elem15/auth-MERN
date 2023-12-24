@@ -19,10 +19,12 @@ export const Registration = () => {
   const [signUp, { error, isLoading, isSuccess }] = useSignUpMutation()
   const [file, setFile] = useState<Blob>()
   const validationSchema = z.object({
-    name: z.string().min(6),
+    name: z.string().min(6, 'Name must contain at least 6 character(s)')
+      .regex(/^[a-zA-Z0-9_-]+( [a-zA-Z0-9_-]+)*$/,
+        'Please enter a name using English letters without spaces, numbers are acceptable'),
     email: z.string().email("Please enter a valid email"),
     password: z.string()
-      .min(6)
+      .min(6, 'Password must contain at least 6 character(s)')
       .regex(
         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
         "Use letters in different cases and numbers"
@@ -37,7 +39,7 @@ export const Registration = () => {
     gender: z.string()
   }).refine((data) => data.password === data.confirmPassword, {
     path: ['confirmPassword'],
-    message: 'Passwords does not match'
+    message: "Passwords do not match"
   })
 
   const onSubmit = (data: User) => {
@@ -99,7 +101,7 @@ export const Registration = () => {
           error={errors.email?.message} />
         <Input type="password" labelText="Password" fieldRegister={register("password")}
           error={errors.password?.message} />
-        <Input type="password" labelText="Password confirm" fieldRegister={register("confirmPassword")}
+        <Input type="password" labelText="Confirm Password" fieldRegister={register("confirmPassword")}
           error={errors.confirmPassword?.message} />
         <Input type="date" min="1917-01-01" max='2017-01-01' labelText="Date of birth" onBlur={dateOnChange} error={errors.dateObj?.message} />
         <RadioGroup fieldRegister={register("gender")} radioList={['male', 'female']} />

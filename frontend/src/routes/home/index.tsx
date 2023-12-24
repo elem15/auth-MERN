@@ -5,15 +5,15 @@ import { ButtonLink } from '../../components/button/ButtonLink'
 
 export const Home = () => {
   const flags = {
-    login: 'signUp',
-    signUp: 'login'
+    login: 'signup',
+    signup: 'login'
   }
-  const [signType, setSignType] = useState(flags.signUp)
+  const [signType, setSignType] = useState(flags.signup)
   const buttonText = flags[signType as keyof typeof flags]
   return (
     <div>
       <div>
-        {signType === 'signUp' &&
+        {signType === 'signup' &&
           (<div className='text-center'>
             <Registration />
             <div>Already registered?</div>
