@@ -29,6 +29,10 @@ export const Account = () => {
     !file && isSuccess && setFigcaption(CAPTIONS[0])
   }, [file, isSuccess])
 
+  useEffect(() => {
+    isSuccess && toast.info('Profile has been successfully updated');
+  }, [isSuccess])
+
   const validationSchema = z.object({
     name: z.string().min(6).or(z.literal('')),
     password: z.string()
