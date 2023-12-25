@@ -20,12 +20,12 @@ export const Registration = () => {
   const [file, setFile] = useState<Blob>()
 
   const validationSchema = z.object({
-    name: z.string().min(6, 'Name must contain at least 6 character(s)')
+    name: z.string().min(6, 'Name must contain at least 6 characters')
       .regex(/^[a-zA-Z0-9_-]+( [a-zA-Z0-9_-]+)*$/,
         'Please enter a name using English letters without spaces, numbers are acceptable'),
     email: z.string().email("Please enter a valid email"),
     password: z.string()
-      .min(6, 'Password must contain at least 6 character(s)')
+      .min(6, 'Password must contain at least 6 characters')
       .regex(
         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
         "Use letters in different cases and numbers"

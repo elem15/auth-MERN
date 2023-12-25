@@ -34,12 +34,12 @@ export const Account = () => {
   }, [isSuccess])
 
   const validationSchema = z.object({
-    name: z.string().min(6, 'Name must contain at least 6 character(s)')
+    name: z.string().min(6, 'Name must contain at least 6 characters')
       .regex(/^[a-zA-Z0-9_-]+( [a-zA-Z0-9_-]+)*$/,
         'Please enter a name using English letters without spaces, numbers are acceptable')
       .or(z.literal('')),
     password: z.string()
-      .min(6, 'Password must contain at least 6 character(s)')
+      .min(6, 'Password must contain at least 6 characters')
       .regex(
         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
         "Use letters in different cases and numbers"
@@ -98,7 +98,7 @@ export const Account = () => {
         <div className='flex flex-col items-center justify-center my-1'>
           <H1>Update account</H1>
 
-          <figure className='w-64 flex flex-col items-center my-1'>
+          <figure className='w-64 min-h-[16rem] flex flex-col items-center mb-4'>
             <Image src={data?.img} width={256} height={256} alt='Avatar of user' />
             <figcaption className='text-center w-full'>{figcaption}</figcaption>
           </figure>
