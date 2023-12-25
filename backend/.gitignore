@@ -8,8 +8,12 @@ package-lock.json
 .nyc_output
 coverage
 
+# Benchmarking
+benchmarks/graphs
+
 #build
 dist
 
 #env
 .env
+.env.local
