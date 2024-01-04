@@ -25,6 +25,7 @@ app.use(
       'http://localhost:4173/',
       'http://localhost:5000/',
       'https://auth-mern-0pty.onrender.com',
+      'https://auth-mern-client.onrender.com',
     ],
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
