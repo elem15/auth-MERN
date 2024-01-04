@@ -5,11 +5,18 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   server: {
     proxy: {
-      '/app': {
-        target: 'http://localhost:5000',
+      '/api': {
+        target: 'https://auth-mern-0pty.onrender.com',
         secure: false,
+        // changeOrigin: true,
+        // rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
-  },
+  },  
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      external: ["core-js-pure"],
+    }
+  }
 })

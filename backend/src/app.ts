@@ -18,7 +18,20 @@ import mongoose from 'mongoose'
 
 const app = express()
 
-app.use(cors())
+app.use(
+  cors({
+    origin: [
+      'http://localhost:5173/',
+      'http://localhost:4173/',
+      'http://localhost:5000/',
+      'https://auth-mern-0pty.onrender.com',
+    ],
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  })
+)
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ limit: '16mb', extended: true }))
@@ -45,7 +58,7 @@ app.use(
   })
 )
 app.use(serveStatic(path.join(__dirname, '../../frontend/dist/')))
-app.use('/app/users', usersRoute)
+app.use('/api/users', usersRoute)
 app.use(() => {
   throw createHttpError(404, 'Route not found!')
 })

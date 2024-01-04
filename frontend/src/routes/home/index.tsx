@@ -10,7 +10,6 @@ export const Home = () => {
   }
   const [signType, setSignType] = useState(flags.signup)
   const buttonText = flags[signType as keyof typeof flags]
-  console.log(import.meta.env)
   return (
     <div>
       <div>
