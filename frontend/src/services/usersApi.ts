@@ -1,12 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { BASE_URL } from '../shared/constants'
+import { BASE_URL, IMG_BASE_URL } from '../shared/constants'
 import { getAge } from '../shared/getAge'
 
 const convertUser = (user: UserFromApi) => {
   const { dateOfBirth } = user
   const age = getAge(new Date(), new Date(dateOfBirth))
   user.age = Math.trunc(age)
-  user.img = user.img && `${BASE_URL}/app/users/images/${user.img}`
+  user.img = user.img && `${IMG_BASE_URL}/app/users/images/${user.img}`
   return user
 }
 export const usersApi = createApi({
