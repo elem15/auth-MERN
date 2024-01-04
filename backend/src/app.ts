@@ -28,9 +28,10 @@ app.use(
       'https://auth-mern-client.onrender.com',
     ],
     credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     preflightContinue: false,
     optionsSuccessStatus: 204,
+    allowedHeaders: ['Content-Type', 'Authorization'],
   })
 )
 
