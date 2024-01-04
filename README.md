@@ -8,7 +8,7 @@ Test task for some company.
 ```bash
 cd auth-MERN/frontend
 npm install
-echo "VITE_LOCAL_DEV=true" > .env.local
+echo "VITE_LOCAL=true" > .env.local
 cd ../backend 
 npm install
 echo "MONGO_CONNECTION_STRING=<your MongoDB uri>" > .env

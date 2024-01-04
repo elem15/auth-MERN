@@ -14,6 +14,7 @@ import validateEnv from './utils/validateEnv'
 import MongoStore from 'connect-mongo'
 import path from 'path'
 import serveStatic from 'serve-static'
+import mongoose from 'mongoose'
 
 const app = express()
 
@@ -21,6 +22,13 @@ app.use(cors())
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ limit: '16mb', extended: true }))
+
+mongoose
+  .connect(validateEnv.MONGO_CONNECTION_STRING)
+  .then(() => {
+    console.log('MongoDB connected')
+  })
+  .catch((e) => console.error(e))
 
 app.use(
   session({
