@@ -6,7 +6,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://auth-mern-0pty.onrender.com/api',
+        target: 'https://jsonplaceholder.typicode.com',
+        // target: 'https://auth-mern-0pty.onrender.com/api',
         secure: false,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),

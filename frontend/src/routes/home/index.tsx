@@ -1,5 +1,5 @@
 import { Registration } from '../../widgets/registration/Registration'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Login } from '../../widgets/login/Login'
 import { ButtonLink } from '../../components/button/ButtonLink'
 
@@ -10,6 +10,14 @@ export const Home = () => {
   }
   const [signType, setSignType] = useState(flags.signup)
   const buttonText = flags[signType as keyof typeof flags]
+
+  useEffect(() => {
+    const get = async () => {
+      const res = await fetch('/api/todos/1')
+      console.log(await res.json())
+    }
+    get()
+  })
   return (
     <div>
       <div>
